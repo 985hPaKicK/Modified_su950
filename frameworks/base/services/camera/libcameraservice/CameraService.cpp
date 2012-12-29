@@ -458,6 +458,8 @@ CameraService::Client::Client(const sp<CameraService>& cameraService,
 #if defined(USE_OVERLAY_FORMAT_YCbCr_420_SP) || defined(USE_OVERLAY_FORMAT_YCrCb_420_SP)
     if (mHardware != NULL) {
 #endif
+	mHardware->getPreviewHeap();
+	mHardware->getRawHeap();
         mUseOverlay = mHardware->useOverlay();
 
         mHardware->setCallbacks(notifyCallback,

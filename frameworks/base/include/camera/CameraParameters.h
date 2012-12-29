@@ -559,6 +559,8 @@ public:
     void setOrientation(int orientation);
     void setPreviewFpsRange(int minFPS,int maxFPS);
 
+    static const char LGE_SOUND_ENABLE[];
+
 private:
     DefaultKeyedVector<String8,String8>    mMap;
 };

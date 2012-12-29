@@ -352,6 +352,9 @@ status_t OMXNodeInstance::allocateBuffer(
         return UNKNOWN_ERROR;
     }
 
+//dirty hack for recording
+    header->pAppPrivate = buffer_meta;
+
     CHECK_EQ(header->pAppPrivate, buffer_meta);
 
     *buffer = header;

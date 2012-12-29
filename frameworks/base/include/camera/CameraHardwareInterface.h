@@ -97,8 +97,12 @@ public:
     /** Return the IMemoryHeap for the preview image heap */
     virtual sp<IMemoryHeap>         getPreviewHeap() const = 0;
 
+    virtual void getOlaPreviewOffset(int32_t tmp) = 0;
+
     /** Return the IMemoryHeap for the raw image heap */
     virtual sp<IMemoryHeap>         getRawHeap() const = 0;
+
+    virtual void getThumbnailHeap() = 0;
 
     /** Set the notification and data callbacks */
     virtual void setCallbacks(notify_callback notify_cb,

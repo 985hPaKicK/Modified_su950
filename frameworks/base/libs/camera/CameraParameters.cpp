@@ -261,6 +261,8 @@ const char CameraParameters::KEY_MANUAL_FOCUS[] = "manual-focus";
 const char CameraParameters::KEY_LUMA_ADAPTION[] = "luma-adaption";
 const char CameraParameters::KEY_VT_MODE[] = "vt-mode";
 
+const char CameraParameters::LGE_SOUND_ENABLE[] = "lge-camera-sound-file";
+
 #ifdef CAF_CAMERA_GB_REL
 static const char* portrait = "portrait";
 static const char* landscape = "landscape";

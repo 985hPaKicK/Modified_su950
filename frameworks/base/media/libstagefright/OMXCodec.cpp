@@ -2222,6 +2222,8 @@ status_t OMXCodec::setupMPEG4EncoderParameters(const sp<MetaData>& meta) {
     mpeg4type.nHeaderExtension = 0;
     mpeg4type.bReversibleVLC = OMX_FALSE;
 
+    mpeg4type.eLevel = OMX_VIDEO_MPEG4Level3;
+
     // Check profile and level parameters
     CodecProfileLevel defaultProfileLevel, profileLevel;
     defaultProfileLevel.mProfile = mpeg4type.eProfile;
@@ -2233,6 +2235,7 @@ status_t OMXCodec::setupMPEG4EncoderParameters(const sp<MetaData>& meta) {
 #if defined (OMAP_ENHANCEMENT) && defined (TARGET_OMAP4)
     mpeg4type.eLevel = OMX_VIDEO_MPEG4Level5;
 #endif
+    mpeg4type.eLevel = OMX_VIDEO_MPEG4Level5;
 
     err = mOMX->setParameter(
             mNode, OMX_IndexParamVideoMpeg4, &mpeg4type, sizeof(mpeg4type));
@@ -5641,15 +5644,6 @@ void OMXCodec::initOutputFormat(const sp<MetaData> &inputFormat) {
 #ifdef USE_GETBUFFERINFO
                     /* Tell the encoder to use our supplied pmem on
                        the input buffer, via vendor-specific useBuffer */
-                    OMX_QCOM_PARAM_PORTDEFINITIONTYPE portDefn;
-                    InitOMXParams(&portDefn);
-                    portDefn.nPortIndex = kPortIndexInput;
-                    portDefn.nMemRegion = OMX_QCOM_MemRegionEBI1;
-
-                    err = mOMX->setParameter( mNode,
-                        (OMX_INDEXTYPE) OMX_QcomIndexPortDefn,
-                        &portDefn, sizeof(portDefn) );
-                    CHECK_EQ(err, OK);
 #endif
                 }
                 else {
