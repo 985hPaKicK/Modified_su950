@@ -3617,5 +3617,7 @@ public class MediaProvider extends ContentProvider {
         // used by the music app's search activity
         URI_MATCHER.addURI("media", "*/audio/search/fancy", AUDIO_SEARCH_FANCY);
         URI_MATCHER.addURI("media", "*/audio/search/fancy/*", AUDIO_SEARCH_FANCY);
+
+        URI_MATCHER.addURI("media", "*/audio/media/#/#", AUDIO_MEDIA_ID);
     }
 }
