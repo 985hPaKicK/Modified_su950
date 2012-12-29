@@ -1412,4 +1412,6 @@ public interface CommandsInterface {
      *          Callback message containing {@link IccCardStatus} structure for the card.
      */
     public void getIccCardStatus(Message result);
+
+    void enableGWSubscription(Message response);
 }

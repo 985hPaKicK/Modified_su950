@@ -1982,6 +1982,14 @@ public class RIL extends BaseCommands implements CommandsInterface {
         send(rr);
     }
 
+    public void enableGWSubscription(Message response)
+    {
+        RILRequest rr = RILRequest.obtain(RIL_REQUEST_GW_SUBSCRIPTION_ENABLE, response);
+
+        riljLog(rr.serialString() + "> " + requestToString(rr.mRequest));
+        send(rr);
+    }
+
     //***** Private Methods
 
     private void sendScreenState(boolean on) {

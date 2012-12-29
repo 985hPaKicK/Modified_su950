@@ -215,6 +215,8 @@ final class GsmServiceStateTracker extends ServiceStateTracker {
                 Settings.System.AIRPLANE_MODE_ON, 0);
         mDesiredPowerState = ! (airplaneMode > 0);
 
+		cm.enableGWSubscription(null);
+
         cr = phone.getContext().getContentResolver();
         cr.registerContentObserver(
                 Settings.System.getUriFor(Settings.System.AUTO_TIME), true,

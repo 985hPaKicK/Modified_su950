@@ -1504,4 +1504,9 @@ public class GSMPhone extends PhoneBase {
     public boolean isCspPlmnEnabled() {
         return mSIMRecords.isCspPlmnEnabled();
     }
+
+    public void enableGWSubscription(Message response)
+    {
+        mCM.enableGWSubscription(response);
+    }
 }
