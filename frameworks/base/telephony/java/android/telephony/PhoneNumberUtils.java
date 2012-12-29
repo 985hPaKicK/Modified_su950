@@ -1059,6 +1059,8 @@ public class PhoneNumberUtils
     public static final int FORMAT_NANP = 1;
     /** Japanese formatting */
     public static final int FORMAT_JAPAN = 2;
+    /** Korean formatting */
+    public static final int FORMAT_KOREA = 3;
 
     /** List of country codes for countries that use the NANP */
     private static final String[] NANP_COUNTRIES = new String[] {
@@ -1160,6 +1162,9 @@ public class PhoneNumberUtils
                 return;
             case FORMAT_JAPAN:
                 formatJapaneseNumber(text);
+                return;
+            case FORMAT_KOREA:
+                formatKoreanNumber(text);
                 return;
         }
     }
@@ -1305,6 +1310,89 @@ public class PhoneNumberUtils
      */
     public static void formatJapaneseNumber(Editable text) {
         JapanesePhoneNumberFormatter.format(text);
+    }
+
+    /**
+     * Formats a phone number in-place using the Korean formatting rules.
+     * Numbers will be formatted as:
+     *
+     * <p><code>
+     * xxx-xxxx
+     * xxxx-xxxx
+     * 02-xxx-xxxx
+     * 02-xxxx-xxxx
+     * xxx-xxx-xxxx
+     * xxx-xxxx-xxxx
+     * 0505-xxxx-xxxx
+     * </code></p>
+     *
+     * @param text the number to be formatted, will be modified with the formatting
+     */
+    public static void formatKoreanNumber(Editable text) {
+        int length = text.length();
+        if (length <= 6) {
+            // The string is either a shortcode or too short to be formatted
+            return;
+        }
+
+        CharSequence saved = text.subSequence(0, length);
+
+        // Strip the dashes first, as we're going to add them back
+        int p = 0;
+        while (p < text.length()) {
+            if (text.charAt(p) == '-') {
+                text.delete(p, p + 1);
+            } else {
+                p++;
+            }
+        }
+        length = text.length();
+
+        // When scanning the number we record where dashes need to be added,
+        // if they're non-0 at the end of the scan the dashes will be added in
+        // the proper places.
+        int dashPositions[] = new int[2];
+        int numDashes = 0;
+	boolean useDash = true;
+
+	// Seoul
+	if ( (text.charAt(0) == '0') && (text.charAt(1) == '2') ) {
+	    switch( length ) {
+		case 7:
+		case 8:
+		case 9: dashPositions[0] = 2; dashPositions[1] = 5; numDashes = 2; break; //02-xxx-xxxx
+		case 10: dashPositions[0] = 2; dashPositions[1] = 6; numDashes = 2; break; //02-xxxx-xxxx
+		default: return; //over
+	    }
+	}
+	else {
+	    switch( length ) {
+		case 7: dashPositions[0] = 3; numDashes = 1; break; //xxx-xxxx
+		case 8: dashPositions[0] = 4; numDashes = 1; break; //xxxx-xxxx
+		case 9:
+		case 10: dashPositions[0] = 3; dashPositions[1] = 6; numDashes = 2; break; //xxx-xxx-xxxx
+		case 11: dashPositions[0] = 3; dashPositions[1] = 7; numDashes = 2; break; //xxx-xxxx-xxxx
+		case 12: dashPositions[0] = 4; dashPositions[1] = 8; numDashes = 2; break; //xxxx-xxxx-xxxx for 0505-xxx-xxxx
+		default: return; //over
+	    }
+	}
+	    
+        // Actually put the dashes in place
+        for (int i = 0; i < numDashes; i++) {
+            int pos = dashPositions[i];
+            text.replace(pos + i, pos + i, "-");
+        }
+
+        // Remove trailing dashes
+        int len = text.length();
+        while (len > 0) {
+            if (text.charAt(len - 1) == '-') {
+                text.delete(len - 1, len);
+                len--;
+            } else {
+            	break;
+            }
+        }
     }
 
     // Three and four digit phone numbers for either special services,
@@ -1633,6 +1721,9 @@ public class PhoneNumberUtils
         }
         if ("jp".compareToIgnoreCase(country) == 0) {
             return FORMAT_JAPAN;
+        }
+        if ("kr".compareToIgnoreCase(country) == 0) {
+            return FORMAT_KOREA;
         }
         return FORMAT_UNKNOWN;
     }
